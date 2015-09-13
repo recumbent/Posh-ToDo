@@ -60,6 +60,10 @@ Describe "Get-ToDo" {
             $todoFile = Get-ToDo
 
             $todoFile | Should Not BeNullOrEmpty
+            $todoFile.Length | Should Be 3
+            $todoFile[0].Substring(0,2) | Should Be " 2"
+            $todoFile[1].Substring(0,2) | Should Be " 3"
+            $todoFile[2].Substring(0,2) | Should Be " 5"
         }
     }
 }
