@@ -9,7 +9,10 @@ function New-ToDo {
     [Parameter(Mandatory=$true, Position=0)]
     [string] $task,
     [Parameter()]
-    [string] $due
+    [string] $due,
+    [Parameter()]
+    [ValidatePattern("^[A-Z]$")]
+    [string] $priority
     )
 
     $filePath = GetToDoFilePath

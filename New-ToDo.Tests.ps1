@@ -31,8 +31,31 @@ Describe "New-ToDo" {
         $todoFile = GetToDoFilePath
 
         $todoFile | Should Contain "due:2064-07-11"
-
     }
+
+    It "should accept a valid priority" {
+        $TestTask = "This is a something with a priority"
+
+        { New-ToDo $TestTask -priority A } | Should Not Throw
+        { New-ToDo $TestTask -priority Z } | Should Not Throw
+        { New-ToDo $TestTask -priority a } | Should Not Throw
+        { New-ToDo $TestTask -priority z } | Should Not Throw
+
+        # "^[A-Z]$"
+    }
+
+    It "should reject an invalid priority" {
+        $TestTask = "This is a something with an invalid priority"
+
+        { New-ToDo $TestTask -priority 0 } | Should Throw
+        { New-ToDo $TestTask -priority 9 } | Should Throw
+        { New-ToDo $TestTask -priority AA } | Should Throw
+        { New-ToDo $TestTask -priority "" } | Should Throw
+    }
+
+    It "should prefix task with priority" {
+    }
+
 }
 
 #New-Todo should fail if no task specified - this is inherent in making task mandatory
