@@ -21,11 +21,25 @@ Describe "New-ToDo" {
 
         $todoFile | Should Contain $testTask
     }
+
+    It "should add due date if date provided" {
+        $TestTask = "This is a something with a due date"
+        $DueDateString = "11-Jul-2064"
+
+        New-ToDo $TestTask -due $DueDateString
+
+        $todoFile = GetToDoFilePath
+
+        $todoFile | Should Contain "due:2064-07-11"
+
+    }
 }
 
-#New-Todo should fail if no task specified
+#New-Todo should fail if no task specified - this is inherent in making task mandatory
 
 #New-Todo should add due: if -due parameter with valid date
+
+#New-Todo should fail if -due parameter with invalid date
 
 #New-Todo should accept valid priority
 #New-Todo should reject invalid priority

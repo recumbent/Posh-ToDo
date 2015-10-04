@@ -7,7 +7,9 @@ function New-ToDo {
     [cmdletbinding()]
     Param(
     [Parameter(Mandatory=$true, Position=0)]
-    [string] $task
+    [string] $task,
+    [Parameter()]
+    [string] $due
     )
 
     $filePath = GetToDoFilePath
@@ -17,7 +19,16 @@ function New-ToDo {
         New-Item -Path $filePath -ItemType File
     }
 
-    Add-Content $filePath $task
+    $taskToAdd = $task
+
+    if (-not [String]::IsNullOrEmpty($due))
+    {
+        $dueDate = Get-Date -Date $due
+
+        $taskToAdd = "$taskToAdd due:{0:yyyy-MM-dd}" -f $dueDate
+    }
+
+    Add-Content $filePath $taskToAdd
 }
 
 function Get-ToDo {
