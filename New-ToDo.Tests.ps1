@@ -40,8 +40,6 @@ Describe "New-ToDo" {
         { New-ToDo $TestTask -priority Z } | Should Not Throw
         { New-ToDo $TestTask -priority a } | Should Not Throw
         { New-ToDo $TestTask -priority z } | Should Not Throw
-
-        # "^[A-Z]$"
     }
 
     It "should reject an invalid priority" {
@@ -54,6 +52,13 @@ Describe "New-ToDo" {
     }
 
     It "should prefix task with priority" {
+        $TestTast = "Test Task"
+
+        .\New-ToDo $TestTask -priority A
+
+        $todoFile = GetToDoFilePath
+
+        $todoFile | Should Contain "(A) $TestTask"
     }
 
 }
@@ -105,5 +110,10 @@ Describe "Get-ToDo" {
     }
 }
 
+#Get-ToDo with done flag should list items that are done
 
 #Set-todo with done flag should set the specified (by number) todo to done (prefix entry with an "x ")
+
+#Set-todo with invalid number should fail
+
+#Set-todo with valid number should not fail
