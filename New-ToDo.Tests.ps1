@@ -88,6 +88,13 @@ Describe "Get-ToDo" {
 
             $todoList | Should BeNullOrEmpty
         }
+
+        It "should return an empty list for all if file doesn't exist" {
+            $todoList = Get-ToDo -All
+
+            $todoList | Should BeNullOrEmpty
+        }
+
     }
 
     Context "File with incomplete tasks" {
@@ -113,7 +120,7 @@ Describe "Get-ToDo" {
             $todoFile[2].Substring(0,2) | Should Be " 5"
         }
 
-        It "should list completed tasks" {
+        It "should list completed tasks if done switch set" {
             $todoFile = Get-ToDo -Done
 
             $todoFile | Should Not BeNullOrEmpty
@@ -122,13 +129,30 @@ Describe "Get-ToDo" {
             $todoFile[1].Substring(0,2) | Should Be " 4"
         }
 
+        It "should list all tasks if all switch set" {
+            $todoFile = Get-ToDo -All
+
+            $todoFile | Should Not BeNullOrEmpty
+            $todoFile.Length | Should Be 5
+            $todoFile[0].Substring(0,2) | Should Be " 1"
+            $todoFile[1].Substring(0,2) | Should Be " 2"
+            $todoFile[2].Substring(0,2) | Should Be " 3"
+            $todoFile[3].Substring(0,2) | Should Be " 4"
+            $todoFile[4].Substring(0,2) | Should Be " 5"
+        }
     }
 }
-
-#Get-ToDo with done flag should list items that are done
-
-#Set-todo with done flag should set the specified (by number) todo to done (prefix entry with an "x ")
 
 #Set-todo with invalid number should fail
 
 #Set-todo with valid number should not fail
+
+#Set-todo with done flag should set the specified (by number) todo to done (prefix entry with an "x ")
+
+#Make this into a module
+
+#Push
+
+#Split files (around module)
+
+#Work out what next

@@ -47,7 +47,9 @@ function Get-ToDo {
 
     Param(
     [Parameter()]
-    [switch] $Done
+    [switch] $Done,
+    [Parameter()]
+    [switch] $All
     )
 
     $filePath = GetToDoFilePath
@@ -63,14 +65,7 @@ function Get-ToDo {
 
     $step2 = $step1 | foreach { ("{0,2}. {1}" -f $counter, $_); $counter += 1 }
 
-    if ($Done)
-    {
-        $step3 = $step2 | where { $_.ToString().Substring(4,2) -eq "x " }
-    }
-    else
-    {
-        $step3 = $step2 | where { $_.ToString().Substring(4,2) -ne "x " }
-    }
+    $step3 = $step2 | where { $All -or ($_.ToString().Substring(4,2) -ne "x " -and -not $Done) -or ($_.ToString().Substring(4,2) -eq "x " -and $Done)}
 
     $result = $step3
 
