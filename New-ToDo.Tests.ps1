@@ -64,7 +64,7 @@ Describe "New-ToDo" {
 
 }
 
-#New-Todo should fail if no task specified - this is inherent in making task mandatory
+#New-Todo should fail if no task specified - this is inherent in making task mandatory, but still worth a test?
 
 #New-Todo should add due: if -due parameter with valid date
 
@@ -143,9 +143,45 @@ Describe "Get-ToDo" {
     }
 }
 
-#Set-todo with invalid number should fail
+Describe "Set-ToDo" {
 
-#Set-todo with valid number should not fail
+    Mock GetToDoFilePath { "TestDrive:\todo.txt" }
+    Context "No file" {
+
+        It "Should error if no tasks" {
+            { Set-ToDo 1 } | Should Throw
+        }
+    }
+
+    Context "File with incomplete tasks" {
+
+        BeforeEach {
+            $filePath = GetToDoFilePath
+            if (Test-Path $filePath)
+            {
+                Remove-Item $filePath
+            }
+
+            $testFilePath = Join-Path $here "get-todo-test.txt"
+            Copy-Item $testFilePath $filePath
+        }
+
+        It "Should error if item number invalid" {
+            { Set-ToDo -5 } | Should Throw
+            { Set-ToDo 0 }  | Should Throw
+            { Set-ToDo 6 }  | Should Throw
+            { Set-ToDo A }  | Should Throw
+        }
+
+        It "Should mark item with index as done" {
+            Set-ToDo 2 -Done
+
+            $filePath | Should Contain "x First undone item"
+        } 
+    }
+}
+
+#Set-todo with valid number should not fail - inherent? Covered by other cases?
 
 #Set-todo with done flag should set the specified (by number) todo to done (prefix entry with an "x ")
 
@@ -156,3 +192,21 @@ Describe "Get-ToDo" {
 #Split files (around module)
 
 #Work out what next
+
+#Set-ToDo Error if index out of range (empty file, block -ve with valiation, too high)
+
+#Context
+
+#Project
+
+#Tag
+
+#Lead time
+
+#Repeat
+
+#Update-ToDo (sort, bring back repeats)
+
+#Archive-ToDo (is this separate or is this part of update??)
+
+#At some point magically refactor to introduce a "class" to manage the things

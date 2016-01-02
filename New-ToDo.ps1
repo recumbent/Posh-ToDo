@@ -71,3 +71,37 @@ function Get-ToDo {
 
     return $result
 }
+
+function Set-ToDo {
+    [cmdletbinding()]
+
+    Param(
+    [Parameter(Mandatory=$true, Position=0)]
+    [int] $Item,
+    [Parameter()]
+    [switch] $Done
+    )
+
+    $filePath = GetToDoFilePath
+
+    if (-not (Test-Path $filePath))
+    {
+        throw "todo.txt is empty"
+    }
+    else
+    {
+        $lines = Get-Content -Path $filePath
+    }
+
+    $total = $lines.Count
+
+    if ($Item -lt 1 -or $Item -gt $total)
+    {
+        throw ("Valid item number is in the range 1 to $total")
+    }
+
+    $itemLine = $lines[$Item - 1]
+    $lines[$Item - 1] = ("x $itemLine")
+
+    Set-Content -Path $filePath -Value $lines
+}
