@@ -177,13 +177,19 @@ Describe "Set-ToDo" {
             Set-ToDo 2 -Done
 
             $filePath | Should Contain "x First undone item"
+        }
+
+        It "Should not mark item with index as done if already done" {
+            Set-ToDo 1 -Done
+
+            $filePath | Should Not Contain "x x "
         } 
     }
 }
 
 #Set-todo with valid number should not fail - inherent? Covered by other cases?
 
-#Set-todo with done flag should set the specified (by number) todo to done (prefix entry with an "x ")
+#Set-todo should add completion date for done
 
 #Make this into a module
 

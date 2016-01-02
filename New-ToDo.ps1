@@ -101,7 +101,10 @@ function Set-ToDo {
     }
 
     $itemLine = $lines[$Item - 1]
-    $lines[$Item - 1] = ("x $itemLine")
+    if (-not $itemLine.StartsWith("x "))
+    {
+        $lines[$Item - 1] = ("x $itemLine")
+    }
 
     Set-Content -Path $filePath -Value $lines
 }
