@@ -1,5 +1,7 @@
 ﻿function GetToDoFilePath
 {
+    $documents = [environment]::getfolderpath("mydocuments")
+
     "c:\temp\todo.txt"
 }
 
@@ -7,12 +9,12 @@ function New-ToDo {
     [cmdletbinding()]
     Param(
     [Parameter(Mandatory=$true, Position=0)]
-    [string] $task,
+    [string] $Task,
     [Parameter()]
-    [string] $due,
+    [string] $Due,
     [Parameter()]
     [ValidatePattern("^[A-Z]$")]
-    [string] $priority
+    [string] $Priority
     )
 
     $filePath = GetToDoFilePath
@@ -43,6 +45,11 @@ function New-ToDo {
 function Get-ToDo {
     [cmdletbinding()]
 
+    Param(
+    [Parameter()]
+    [switch] $Done
+    )
+
     $filePath = GetToDoFilePath
     if (-not (Test-Path $filePath))
     {
@@ -56,7 +63,14 @@ function Get-ToDo {
 
     $step2 = $step1 | foreach { ("{0,2}. {1}" -f $counter, $_); $counter += 1 }
 
-    $step3 = $step2 | where { $_.ToString().Substring(4,2) -ne "x " }
+    if ($Done)
+    {
+        $step3 = $step2 | where { $_.ToString().Substring(4,2) -eq "x " }
+    }
+    else
+    {
+        $step3 = $step2 | where { $_.ToString().Substring(4,2) -ne "x " }
+    }
 
     $result = $step3
 

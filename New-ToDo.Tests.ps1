@@ -70,9 +70,6 @@ Describe "New-ToDo" {
 
 #New-Todo should fail if -due parameter with invalid date
 
-#New-Todo should accept valid priority
-#New-Todo should reject invalid priority
-#New-Todo should prefix with priority if priority valid
 
 Describe "Get-ToDo" {
 #Get-ToDo should list incomplete todos with a numeric prefix (need to define order?)
@@ -81,6 +78,13 @@ Describe "Get-ToDo" {
     Context "No file" {
         It "should return an empty list if file doesn't exist" {
             $todoList = Get-ToDo
+
+            $todoList | Should BeNullOrEmpty
+        }
+
+        
+        It "should return an empty list for done if file doesn't exist" {
+            $todoList = Get-ToDo -Done
 
             $todoList | Should BeNullOrEmpty
         }
@@ -108,6 +112,16 @@ Describe "Get-ToDo" {
             $todoFile[1].Substring(0,2) | Should Be " 3"
             $todoFile[2].Substring(0,2) | Should Be " 5"
         }
+
+        It "should list completed tasks" {
+            $todoFile = Get-ToDo -Done
+
+            $todoFile | Should Not BeNullOrEmpty
+            $todoFile.Length | Should Be 2
+            $todoFile[0].Substring(0,2) | Should Be " 1"
+            $todoFile[1].Substring(0,2) | Should Be " 4"
+        }
+
     }
 }
 
