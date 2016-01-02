@@ -22,7 +22,13 @@ function New-ToDo {
         New-Item -Path $filePath -ItemType File
     }
 
-    $taskToAdd = $task
+    $taskToAdd = $task.Trim()
+
+    if (-not [string]::IsNullOrEmpty($priority))
+    {
+        $priority = $priority.ToUpper();
+        $taskToAdd = "($priority) $taskToAdd"
+    }
 
     if (-not [String]::IsNullOrEmpty($due))
     {

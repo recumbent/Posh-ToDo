@@ -52,13 +52,14 @@ Describe "New-ToDo" {
     }
 
     It "should prefix task with priority" {
-        $TestTast = "Test Task"
+        $TestTask = "Test Task"
 
-        .\New-ToDo $TestTask -priority A
+        New-ToDo $TestTask -priority A
 
         $todoFile = GetToDoFilePath
 
-        $todoFile | Should Contain "(A) $TestTask"
+        $expected = "\(A\) $TestTask"
+        $todoFile | Should Contain $expected
     }
 
 }
