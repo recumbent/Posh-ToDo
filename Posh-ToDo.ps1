@@ -1,8 +1,17 @@
 ﻿function GetToDoFilePath
 {
-    $documents = [environment]::getfolderpath("mydocuments")
+    
+    if ($env:todotxtfolderpath -ne $null)
+    {
+        $filePath = Join-Path $env:todotxtfolderpath "todo.txt"
+    }
+    else
+    {
+        $documents = [environment]::getfolderpath("mydocuments")
+        $filePath = Join-Path $documents "todo.txt"
+    }
 
-    "c:\temp\todo.txt"
+    return $filePath
 }
 
 function New-ToDo {
