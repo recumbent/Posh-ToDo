@@ -103,7 +103,8 @@ function Set-ToDo {
     $itemLine = $lines[$Item - 1]
     if (-not $itemLine.StartsWith("x "))
     {
-        $lines[$Item - 1] = ("x $itemLine")
+        $dateCompleted = (Get-Date).ToString("yyyy-MM-dd")
+        $lines[$Item - 1] = ("x $dateCompleted $itemLine")
     }
 
     Set-Content -Path $filePath -Value $lines

@@ -182,13 +182,13 @@ Describe "Set-ToDo" {
         It "Should mark item with index as done" {
             Set-ToDo 2 -Done
 
-            $filePath | Should Contain "x First undone item"
+            $filePath | Should Contain "x \d{4}-\d{2}-\d{2} First undone item"
         }
 
         It "Should not mark item with index as done if already done" {
             Set-ToDo 1 -Done
 
-            $filePath | Should Not Contain "x x "
+            $filePath | Should Not Contain "x \d{4}-\d{2}-\d{2} x "
         } 
     }
 }
