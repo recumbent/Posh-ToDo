@@ -1,9 +1,12 @@
 ﻿$here = Split-Path -Parent $MyInvocation.MyCommand.Path
 $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path).Replace(".Tests.", ".")
+
 . "$here\$sut"
 
 Describe "New-ToDo" {
+
     Mock GetToDoFilePath { "TestDrive:\todo.txt" }
+
     It "should create file if it doesn't exist" {
         $TestTask = "This is something that needs to be done"
         New-Todo $testTask
@@ -61,7 +64,6 @@ Describe "New-ToDo" {
         $expected = "\(A\) $TestTask"
         $todoFile | Should Contain $expected
     }
-
 }
 
 #New-Todo should fail if no task specified - this is inherent in making task mandatory, but still worth a test?
@@ -72,9 +74,12 @@ Describe "New-ToDo" {
 
 
 Describe "Get-ToDo" {
+
 #Get-ToDo should list incomplete todos with a numeric prefix (need to define order?)
 #Get-ToDo with completed flag should list completed todos with numeric prefix
+
     Mock GetToDoFilePath { "TestDrive:\todo.txt" }
+
     Context "No file" {
         It "should return an empty list if file doesn't exist" {
             $todoList = Get-ToDo
@@ -146,6 +151,7 @@ Describe "Get-ToDo" {
 Describe "Set-ToDo" {
 
     Mock GetToDoFilePath { "TestDrive:\todo.txt" }
+
     Context "No file" {
 
         It "Should error if no tasks" {
