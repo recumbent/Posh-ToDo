@@ -6,8 +6,9 @@ An implementation of todo.txt in Powershell attempting to follow sensible cmdlet
 
 ## Features
 
-The following cmdlets are provided:
+The following cmdlets are (will be) provided:
 
 * New-ToDo - for creation of new items (adding lines to the file)
 * Get-ToDo - for listing todo items
 * Set-ToDo - for changing todo item status
+* Update-ToDo - Sort, manage repeats, archive, etc
