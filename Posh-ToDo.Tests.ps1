@@ -64,6 +64,17 @@ Describe "New-ToDo" {
         $expected = "\(A\) $TestTask"
         $todoFile | Should Contain $expected
     }
+
+    It "should add due date if valid date passed in due parameter" {
+        $testTask = "Test Task"
+        $testDate = "11-Jul-2016"
+        $formated = "2016-07-11"
+
+        New-ToDo $testTask -due $testDate
+
+        $todoFile = GetToDoFilePath
+        $todoFile | Should Contain "due:$formatted"
+    }
 }
 
 #New-Todo should fail if no task specified - this is inherent in making task mandatory, but still worth a test?
@@ -72,6 +83,7 @@ Describe "New-ToDo" {
 
 #New-Todo should fail if -due parameter with invalid date
 
+#Interesting ideas around parsing due dates
 
 Describe "Get-ToDo" {
 
@@ -190,12 +202,18 @@ Describe "Set-ToDo" {
 
             $filePath | Should Not Contain "x \d{4}-\d{2}-\d{2} x "
         } 
+
+        It "Should add completion date for done" {
+            Set-ToDo 2 -Done
+            
+            $date = "{0:yyyy-MM-dd}" -f $dueDate
+            $filePath | Should Contain $date 
+        }
     }
 }
 
 #Set-todo with valid number should not fail - inherent? Covered by other cases?
 
-#Set-todo should add completion date for done
 
 #Make this into a module
 
