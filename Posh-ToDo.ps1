@@ -48,6 +48,7 @@ function New-ToDo {
         $taskToAdd = "$taskToAdd due:{0:yyyy-MM-dd}" -f $dueDate
     }
 
+
     Add-Content $filePath $taskToAdd
 }
 

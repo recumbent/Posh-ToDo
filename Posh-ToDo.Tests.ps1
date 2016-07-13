@@ -75,20 +75,21 @@ Describe "New-ToDo" {
         $todoFile = GetToDoFilePath
         $todoFile | Should Contain "due:$formatted"
     }
+
+    It "should fail if invalid date passed in due parameter" {
+        $testTask = "Test Task"
+        $testDate = "45-Fsh-2016"
+
+        { New-ToDo $testTask -due $testDate } | Should Throw
+    }
 }
 
 #New-Todo should fail if no task specified - this is inherent in making task mandatory, but still worth a test?
 
-#New-Todo should add due: if -due parameter with valid date
-
-#New-Todo should fail if -due parameter with invalid date
-
 #Interesting ideas around parsing due dates
+   # 'tomorrow', 'next', 'x day(s)', 'x working days', '<day of week>' - would want a date parse function
 
 Describe "Get-ToDo" {
-
-#Get-ToDo should list incomplete todos with a numeric prefix (need to define order?)
-#Get-ToDo with completed flag should list completed todos with numeric prefix
 
     Mock GetToDoFilePath { "TestDrive:\todo.txt" }
 
@@ -160,6 +161,14 @@ Describe "Get-ToDo" {
     }
 }
 
+# Get-ToDo
+   # 'Should return incomplete items with due date set if due with no date specified
+   # 'Should return incomplete items due on or before specified due date if due flag with date
+   # 'Should return incomplete items with priority if priority with no priority specified
+   # 'Should return incomplete items with priority equal to or below specified priority
+   # Standard sort options (notwithstanding that I could use actual sort
+   # This implies migrating to objects for internal storage
+    
 Describe "Set-ToDo" {
 
     Mock GetToDoFilePath { "TestDrive:\todo.txt" }
@@ -236,7 +245,41 @@ Describe "Set-ToDo" {
 #Repeat
 
 #Update-ToDo (sort, bring back repeats)
+Describe "Update-ToDo" {
+
+    Mock GetToDoFilePath { "TestDrive:\todo.txt" }
+
+    Context "File with incomplete tasks" {
+
+        BeforeEach {
+            $filePath = GetToDoFilePath
+            if (Test-Path $filePath)
+            {
+                Remove-Item $filePath
+            }
+
+            $testFilePath = Join-Path $here "get-todo-test.txt"
+            Copy-Item $testFilePath $filePath
+        }
+
+        It "Should sort" { # (alpha, but that means priority then due date)
+        }
+
+        #Should generate new items for done repeats 
+
+        #Should not generate new item for repeat if already exists
+    }
+}
 
 #Archive-ToDo (is this separate or is this part of update??)
 
+    #Should remove done items from todo file
+
+    #Should add done items to archive file
+
+    #Archive file name is todo.txt -> todo-archive.txt my-todo.txt -> my-todo-archive.txt
+
 #At some point magically refactor to introduce a "class" to manage the things
+
+#File parameter to specify alternative file - for get, set, update, archive
+#
