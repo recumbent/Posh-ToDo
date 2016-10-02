@@ -1,0 +1,5 @@
+﻿x First done item
+Second undone item
+First undone item
+x Second done item
+(A) Third undone item

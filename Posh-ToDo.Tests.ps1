@@ -258,11 +258,22 @@ Describe "Update-ToDo" {
                 Remove-Item $filePath
             }
 
-            $testFilePath = Join-Path $here "get-todo-test.txt"
+            $testFilePath = Join-Path $here "update-todo-test.txt"
             Copy-Item $testFilePath $filePath
         }
 
         It "Should sort" { # (alpha, but that means priority then due date)
+            Update-ToDo
+
+            $todoFile = Get-ToDo -All
+
+            $todoFile | Should Not BeNullOrEmpty
+            $todoFile.Length | Should Be 5
+            $todoFile[0].Substring(0,7) | Should Be " 1. (A)"
+            $todoFile[1].Substring(0,7) | Should Be " 2. Fir"
+            $todoFile[2].Substring(0,7) | Should Be " 3. Sec"
+            $todoFile[3].Substring(0,5) | Should Be " 4. x"
+            $todoFile[4].Substring(0,5) | Should Be " 5. x"
         }
 
         #Should generate new items for done repeats 

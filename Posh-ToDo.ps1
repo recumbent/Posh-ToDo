@@ -119,3 +119,23 @@ function Set-ToDo {
 
     Set-Content -Path $filePath -Value $lines
 }
+
+
+function Update-ToDo {
+    [cmdletbinding()]
+
+    $filePath = GetToDoFilePath
+
+    if (-not (Test-Path $filePath))
+    {
+        throw "todo.txt is empty"
+    }
+    else
+    {
+        $lines = Get-Content -Path $filePath
+    }
+
+    $sorted = ($lines | Sort-Object)
+
+    Set-Content -Path $filePath -Value $sorted
+}
