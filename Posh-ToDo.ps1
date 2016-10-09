@@ -139,3 +139,22 @@ function Update-ToDo {
 
     Set-Content -Path $filePath -Value $sorted
 }
+
+class ToDoItem {
+    [bool]$IsDone
+    [datetime]$DateDone
+    ToDoItem([String] $itemAsString) {
+        $this.IsDone = $itemAsString.StartsWith("x ")
+        if ($this.IsDone) {
+            $dateString = $itemAsString.Substring(2, 10)
+
+            $outDate = Get-Date
+            if([DateTime]::TryParseExact($dateString, "yyyy-MM-dd",
+                [System.Globalization.CultureInfo]::InvariantCulture, 
+                [System.Globalization.DateTimeStyles]::None, 
+                [ref]$outDate)) {
+                    $this.DateDone = $outDate
+            }
+        }
+    }
+}

@@ -223,7 +223,6 @@ Describe "Set-ToDo" {
 
 #Set-todo with valid number should not fail - inherent? Covered by other cases?
 
-
 #Make this into a module
 
 #Push
@@ -293,4 +292,42 @@ Describe "Update-ToDo" {
 #At some point magically refactor to introduce a "class" to manage the things
 
 #File parameter to specify alternative file - for get, set, update, archive
-#
+
+# Need at least one class, ToDoItem - I'm about to lock myself to ps5 !
+
+# Properties: priority, isDone, dateDone, text
+# Method: toString (!)
+
+Describe "ToDoItem" {
+
+    It "Should parse done" {
+       $parsed = [ToDoItem]::new("x I am a done item")
+       $parsed.IsDone | Should Be $true    
+    }
+
+    # TODO: This and the above are data driven test if that will work here
+    It "Should parse not done" {
+       $parsed = [ToDoItem]::new("I am a not done item")
+       $parsed.IsDone | Should Be $false
+    }
+
+    It "Should parse date done" {
+       $parsed = [ToDoItem]::new("x 2016-10-04 I am a done item with a date")
+       $expected = Get-Date("04-Oct-2016")
+       $parsed.DateDone | Should Be $expected       
+    }
+
+    It "Should not set date done if it can't parse the date" {
+       $parsed = [ToDoItem]::new("x I am a done item without a date")
+       $expected = [DateTime]::MinValue
+       $parsed.DateDone | Should Be $expected       
+    }
+
+    It "Should parse priority" {
+
+    }
+
+    It "Should parse description" {
+
+    }
+} 
