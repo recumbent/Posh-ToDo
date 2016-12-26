@@ -323,10 +323,26 @@ Describe "ToDoItem" {
        $parsed.DateDone | Should Be $expected       
     }
 
-    It "Should parse priority" {
+
+    $prioritised = @(
+        "(J) prioritised, not done",
+        "x (J) prioritised, done",
+        "x 2016-10-04 (J) prioritised, done with date"
+    )
+    
+    foreach($item in $prioritised) {
+        It "Should parse priority" {
+            $parsed = [ToDoItem]::new($item)
+            $parsed.Priority | Should Be "J"
+        }
+    }
+
+    It "Should not set priority if none set" {
 
     }
 
+    # By this we mean that it should extract the description text and not include non-description
+    # hmm if I start adding tags and things tests in this context will need to be extended
     It "Should parse description" {
 
     }

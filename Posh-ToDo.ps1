@@ -143,6 +143,7 @@ function Update-ToDo {
 class ToDoItem {
     [bool]$IsDone
     [datetime]$DateDone
+    [string]$Priority
     ToDoItem([String] $itemAsString) {
         $this.IsDone = $itemAsString.StartsWith("x ")
         if ($this.IsDone) {
@@ -156,5 +157,9 @@ class ToDoItem {
                     $this.DateDone = $outDate
             }
         }
+        if ($itemAsString -match "^(x (\d{4}-\d{2}-\d{2} )?)?\((?<priority>[A-Z])\)") {
+            $this.Priority = $matches.priority
+        }
+
     }
 }
