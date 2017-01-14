@@ -70,12 +70,12 @@ function Get-ToDo {
 
     $lines = Get-Content -Path $filePath
 
-    $step1 = $lines | Where { -not [String]::IsNullOrWhiteSpace($_) }
+    $step1 = $lines | Where-Object { -not [String]::IsNullOrWhiteSpace($_) }
     $counter = 1
 
-    $step2 = $step1 | foreach { ("{0,2}. {1}" -f $counter, $_); $counter += 1 }
+    $step2 = $step1 | ForEach-Object { ("{0,2}. {1}" -f $counter, $_); $counter += 1 }
 
-    $step3 = $step2 | where { $All -or ($_.ToString().Substring(4,2) -ne "x " -and -not $Done) -or ($_.ToString().Substring(4,2) -eq "x " -and $Done)}
+    $step3 = $step2 | Where-Object { $All -or ($_.ToString().Substring(4,2) -ne "x " -and -not $Done) -or ($_.ToString().Substring(4,2) -eq "x " -and $Done)}
 
     $result = $step3
 
