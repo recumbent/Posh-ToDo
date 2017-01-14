@@ -337,8 +337,17 @@ Describe "ToDoItem" {
         }
     }
 
-    It "Should not set priority if none set" {
+    $notPrioritised = @(
+        "not prioritised, not done",
+        "x not prioritised, done",
+        "x 2016-10-04 not prioritised, done with date"
+    )
 
+    foreach($item in $notPrioritised) {
+        It "Should not set priority if none set" {
+            $parsed = [ToDoItem]::new($item)
+            $parsed.Priority | Should Be $null
+        }
     }
 
     # By this we mean that it should extract the description text and not include non-description
