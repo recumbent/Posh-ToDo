@@ -144,9 +144,16 @@ class ToDoItem {
     [bool]$IsDone
     [datetime]$DateDone
     [string]$Priority
+    [string]$Description
     ToDoItem([String] $itemAsString) {
+        $descriptionStart = 0;
+
+        $this.Description = $itemAsString
+        
         $this.IsDone = $itemAsString.StartsWith("x ")
         if ($this.IsDone) {
+            $descriptionStart += 2
+
             $dateString = $itemAsString.Substring(2, 10)
 
             $outDate = Get-Date
@@ -154,12 +161,16 @@ class ToDoItem {
                 [System.Globalization.CultureInfo]::InvariantCulture, 
                 [System.Globalization.DateTimeStyles]::None, 
                 [ref]$outDate)) {
-                    $this.DateDone = $outDate
+                $this.DateDone = $outDate
+                $descriptionStart += 11
             }
         }
+
         if ($itemAsString -match "^(x (\d{4}-\d{2}-\d{2} )?)?\((?<priority>[A-Z])\)") {
             $this.Priority = $matches.priority
+            $descriptionStart += 4
         }
 
+        $this.Description = $itemAsString.Substring($descriptionStart)
     }
 }

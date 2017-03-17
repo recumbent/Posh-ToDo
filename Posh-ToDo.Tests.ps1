@@ -352,7 +352,19 @@ Describe "ToDoItem" {
 
     # By this we mean that it should extract the description text and not include non-description
     # hmm if I start adding tags and things tests in this context will need to be extended
-    It "Should parse description" {
 
+    $desc = "This is the descriptive bit, honest!"
+    $descriptions = @(
+        "This is the descriptive bit, honest!",
+        "(J) This is the descriptive bit, honest!",
+        "x (J) This is the descriptive bit, honest!",
+        "x 2016-10-04 (J) This is the descriptive bit, honest!"
+    )
+
+    foreach($item in $descriptions) {
+        It "Should parse description" {
+            $parsed = [ToDoItem]::new($item)
+            $parsed.Description | Should Be $desc
+        }
     }
 } 
